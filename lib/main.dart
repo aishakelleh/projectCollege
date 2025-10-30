@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'feature/project/presentation/pages/welcom.dart';
+import 'feature/project/presentation/pages/splash_screen.dart';
 
 void main(){
   runApp(Main());
@@ -13,7 +11,7 @@ class Main extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: WelcomeScreen()
+        home: WelcomeScreen(),
     );
   }
 }
