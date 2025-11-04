@@ -5,8 +5,6 @@ import 'package:projectfourthyear/feature/project/data/repo/project_repo.dart';
 import 'package:projectfourthyear/feature/project/presentation/cubit/login/login_cubit.dart';
 
 final GetIt getIt = GetIt.instance;
-final dio=Dio();
-
 void setupDependencies() {
   getIt.registerLazySingleton(() {
     final dio = Dio();
@@ -19,7 +17,6 @@ void setupDependencies() {
     return dio;
   });  getIt.registerLazySingleton(() => ApiService(
       getIt<Dio>(),
-      baseUrl: "https://mohmmadfallaha053.premiumasp.net/api/v1",
     ),);
   getIt.registerLazySingleton(() => ProjectRepo(apiService: getIt<ApiService>()));
   getIt.registerFactory(() => LoginCubit(repo: getIt<ProjectRepo>()));

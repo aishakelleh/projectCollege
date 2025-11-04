@@ -7,7 +7,7 @@ part 'api_service.g.dart';
 
 @RestApi(baseUrl: "https://mohmmadfallaha053.premiumasp.net/api/v1")
 abstract class ApiService {
-  factory ApiService(Dio dio, {required String baseUrl}) = _ApiService;
+  factory ApiService(Dio dio, { String baseUrl}) = _ApiService;
 
   @POST("/Auth/log-in")
   Future<LoginResponse> addLogin(@Body() LoginRequest logInRequest);

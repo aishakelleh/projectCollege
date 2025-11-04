@@ -96,12 +96,12 @@ class _SignUpState extends State<SignUp> {
                                 return 'Please enter Email';
                               }
 
-                              final gmailRegex = RegExp(
-                                r'^[a-zA-Z0-9._%+-]+@gmail\.com$',
-                              );
-                              if (!gmailRegex.hasMatch(value)) {
-                                return 'Invalid Email';
-                              }
+                              // final gmailRegex = RegExp(
+                              //   r'^[a-zA-Z0-9._%+-]+@gmail\.com$',
+                              // );
+                              // if (!gmailRegex.hasMatch(value)) {
+                              //   return 'Invalid Email';
+                              // }
 
                               return null; // ✅ valid
                             },
@@ -139,9 +139,9 @@ class _SignUpState extends State<SignUp> {
                               if (value == null || value.isEmpty) {
                                 return 'please enter password';
                               }
-                              if (value.length < 8) {
-                                return 'error in password';
-                              }
+                              // if (value.length < 8) {
+                              //   return 'error in password';
+                              // }
                               return null;
                             },
                           ),
@@ -212,12 +212,6 @@ class _SignUpState extends State<SignUp> {
                           },
                           child: Container(
                             decoration: BoxDecoration(
-                              // gradient: LinearGradient(
-                              //   colors: [
-                              //     Color.fromRGBO(156, 19, 47, 1),
-                              //     Color.fromRGBO(35, 20, 45, 1),
-                              //   ],
-                              // ),
                               color:Color(0xff7E22CD),
                               borderRadius: BorderRadius.circular(400),
                             ),
