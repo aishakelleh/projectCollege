@@ -106,13 +106,17 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                         itemCount: state.students.length,
                         itemBuilder: (context, index) {
                           final ResponseStudent student = state.students[index];
-                          return TaskCard(
-                            name: student.name,
-                            gender: student.gender,
-                            phone: student.phone,
-                            id: student.id,
-                            email: student.email,
-                            isLogIn: student.isLogIn,
+                          return SlideTransition(
+
+                            position:
+                            child: TaskCard(
+                              name: student.name,
+                              gender: student.gender,
+                              phone: student.phone,
+                              id: student.id,
+                              email: student.email,
+                              isLogIn: student.isLogIn,
+                            ),
                           );
                         },
                       ),
