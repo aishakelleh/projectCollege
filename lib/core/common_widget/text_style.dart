@@ -25,6 +25,7 @@ class AppStyle {
     fontSize: 15.sp,
   );
   static TextStyle signUp = TextStyle(color: Colors.black, fontSize: 20.sp);
+  static TextStyle delete = TextStyle(color: Colors.red);
   static TextStyle textField = TextStyle(
     color:Color(0xff7E22CD),
     fontSize: 25.sp,

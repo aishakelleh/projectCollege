@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:projectfourthyear/feature/login/model/login_request/login_request.dart';
 import 'package:projectfourthyear/feature/login/presentation/cubit/login/login_cubit.dart';
-import 'package:projectfourthyear/feature/add_student_teacher/presentation/pages/dashboardscreen.dart';
 import 'package:projectfourthyear/feature/login/presentation/pages/sign_up.dart';
 
 import 'package:projectfourthyear/core/theme/app_color.dart';
+import '../../../add_user/presentation/pages/dashboardscreen.dart';
 import '../cubit/login/login_state.dart';
 import '../../../../core/common_widget/text_style.dart';
 
@@ -28,6 +28,7 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: BlocListener<LoginCubit, LoginState>(
         listener: (context, state) {
@@ -39,8 +40,6 @@ class _SignInState extends State<SignIn> {
               ),
 
             );
-
-
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
@@ -179,6 +178,7 @@ class _SignInState extends State<SignIn> {
                               return GestureDetector(
                                 onTap: () {
                                   if (formKey.currentState!.validate()) {
+
                                     final request = LoginRequest(
                                       email: emailController.text,
                                       password: passController.text,

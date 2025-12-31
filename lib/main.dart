@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:projectfourthyear/feature/add_student_teacher/presentation/cubit/add_student_cubit.dart';
-import 'package:projectfourthyear/feature/login/presentation/cubit/login/login_cubit.dart';
-import 'package:projectfourthyear/feature/add_student_teacher/presentation/pages/dashboardscreen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'core/di/dependecy_injection.dart';
-import 'feature/login/presentation/pages/splash_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:projectfourthyear/feature/levels/presentation/cubit/level_cubit.dart';
+import 'package:projectfourthyear/feature/login/presentation/cubit/login/login_cubit.dart';
+import 'package:projectfourthyear/feature/subjects/predentation/cubit/subject_cubit.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'core/di/dependecy_injection.dart';
+import 'feature/add_user/presentation/cubit/add_user_cubit.dart';
+import 'feature/add_user/presentation/pages/dashboardscreen.dart';
+import 'feature/login/presentation/pages/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,20 +28,17 @@ class Main extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (context) => getIt<LoginCubit>(),
-        ),
-        BlocProvider(
-          create: (context) => getIt<AddStudentCubit>(),
-        ),
+        BlocProvider(create: (context) => getIt<LoginCubit>()),
+        BlocProvider(create: (context) => getIt<AddUserCubit>()),
+        BlocProvider(create: (context) => getIt<LevelCubit>()),
+        BlocProvider(create: (context) => getIt<SubjectCubit>()),
       ],
       child: ScreenUtilInit(
         designSize: Size(375, 812),
         child: MaterialApp(
-            debugShowCheckedModeBanner: false,
-            home: isLoggedIn ? DashBoardScreen() : WelcomeScreen()
+          debugShowCheckedModeBanner: false,
+          home: isLoggedIn ? DashBoardScreen() : WelcomeScreen(),
         ),
-
       ),
     );
   }
