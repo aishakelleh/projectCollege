@@ -1,8 +1,10 @@
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:projectfourthyear/feature/subjects/data/repo/repo_subject.dart';
 import 'package:projectfourthyear/feature/subjects/model/response/request_subject.dart';
 import 'package:projectfourthyear/feature/subjects/predentation/cubit/subject_state.dart';
 
+import '../../../../core/errors/exception.dart';
 import '../../model/response_/response_subject.dart';
 
 // class SubjectCubit extends Cubit<SubjectState> {
@@ -81,30 +83,54 @@ class SubjectCubit extends Cubit<SubjectState> {
       final subjects = await repoSubject.getSubject(levelId);
       emit(state.copyWith(status: StatusSubject.success, subject: subjects));
     } catch (e) {
-      emit(state.copyWith(status: StatusSubject.failed, errorMassage: e.toString()));
+      emit(
+        state.copyWith(
+          status: StatusSubject.failed,
+          errorMassage: e.toString(),
+        ),
+      );
     }
   }
 
-  Future<void> installSubject(RequestSubject requestSubject, int levelId) async {
+  Future<void> installSubject(
+    RequestSubject requestSubject,
+    int levelId,
+  ) async {
     emit(state.copyWith(status: StatusSubject.loading));
     try {
-      final ResponseSubject responseSubject = await repoSubject.createSubject(requestSubject);
+      final ResponseSubject responseSubject = await repoSubject.createSubject(
+        requestSubject,
+      );
       List<ResponseSubject> newSubject = List.from(state.subject);
       newSubject.add(responseSubject);
       emit(state.copyWith(status: StatusSubject.success, subject: newSubject));
       await fetchData(requestSubject.levelId); // جلب بعد الإضافة
     } catch (e) {
-      emit(state.copyWith(status: StatusSubject.failed, errorMassage: e.toString()));
+      emit(
+        state.copyWith(
+          status: StatusSubject.failed,
+          errorMassage: e.toString(),
+        ),
+      );
     }
   }
 
-  Future<void> updateSubject(RequestSubject requestSubject, int subjectId, int levelId) async {
+  Future<void> updateSubject(
+    RequestSubject requestSubject,
+    int subjectId,
+    int levelId,
+  ) async {
     emit(state.copyWith(status: StatusSubject.loading));
     try {
       await repoSubject.editSubject(requestSubject, subjectId);
       await fetchData(levelId); // إعادة جلب البيانات
     } catch (e) {
-      emit(state.copyWith(status: StatusSubject.failed, errorMassage: e.toString()));
+      emit(
+        state.copyWith(
+          status: StatusSubject.failed,
+          errorMassage: e.toString(),
+        ),
+      );
     }
   }
 
@@ -112,9 +138,21 @@ class SubjectCubit extends Cubit<SubjectState> {
     emit(state.copyWith(status: StatusSubject.loading));
     try {
       await repoSubject.cancelSubject(subjectId);
-      await fetchData(levelId); // إعادة جلب البيانات
-    } catch (e) {
-      emit(state.copyWith(status: StatusSubject.failed, errorMassage: e.toString()));
+      await fetchData(levelId);
+    }  on DioException catch (e) {
+      emit(
+        state.copyWith(
+          status: StatusSubject.failed,
+          errorMassage: mapDioErrorToMessage(e),
+        ),
+      );
+    }catch (e) {
+      emit(
+        state.copyWith(
+          status: StatusSubject.failed,
+          errorMassage: 'حدث خطا غير متوقع ',
+        ),
+      );
     }
   }
 }

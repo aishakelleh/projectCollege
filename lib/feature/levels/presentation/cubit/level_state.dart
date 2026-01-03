@@ -4,9 +4,9 @@ part 'level_state.freezed.dart';
 @freezed
 abstract class LevelState with _$LevelState{
   factory LevelState({
-    @Default(StatusLevel.initial) StatusLevel status,
+    @Default(StatusGroup.initial) StatusGroup status,
     @Default([]) List<ResponseLevel>level,
     String?errorMassage,
 })=_LevelState;
 }
-enum StatusLevel{initial,loading,success,failed}
+enum StatusGroup{initial,loading,success,failed}

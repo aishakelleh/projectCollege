@@ -56,68 +56,80 @@ class _LevelState extends State<Level> {
               ),
             ),
             Expanded(
-              child: BlocBuilder<LevelCubit, LevelState>(
-                builder: (context, state) {
-                  if (state.status == StatusLevel.loading &&
-                      state.level.isEmpty) {
-                    return Center(child: CircularProgressIndicator());
-                  } else if (state.status == StatusLevel.failed) {
-                    return Text(state.errorMassage ?? 'حدث خطأ');
+              child: BlocListener<LevelCubit, LevelState>(
+                listener: (context, state) {
+                  if (state.status == StatusGroup.failed) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(state.errorMassage ?? 'حدث خطا'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
                   }
-                  return ListView.separated(
-                    padding: EdgeInsets.all(16),
-                    itemCount: state.level.length,
-                    separatorBuilder: (context, index) =>
-                        SizedBox(height: 12.h),
-                    itemBuilder: (context, index) {
-                      final level = state.level[index];
-                      return Slidable(
-                        endActionPane: ActionPane(
-                          motion: BehindMotion(),
-                          extentRatio: 0.3,
-                          children: [
-                            SlidableAction(
-                              onPressed: (context) => showDialog(
-                                context: context,
-                                builder: (context) =>
-                                    DialogDeleteLevel(level: level),
-                              ),
-                              label: 'delete',
-                              icon: Icons.delete,
-                              backgroundColor: Colors.red,
-                            ),
-                          ],
-                        ),
-                        child: Card(
-                          elevation: 3,
-                          child: ListTile(
-                            title: Text(level.name),
-                            trailing: Icon(Icons.arrow_forward_ios),
-                            onLongPress: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) =>
-                                    DialogUpdateLevel(level: level),
-                              );
-                            },
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => Subject(
-                                    levelId: level.id,
-                                    levelName: level.name,
-                                    level: level,
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      );
-                    },
-                  );
                 },
+                child: BlocBuilder<LevelCubit, LevelState>(
+                  builder: (context, state) {
+                    if (state.status == StatusGroup.loading &&
+                        state.level.isEmpty) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (state.status == StatusGroup.failed) {
+                      return Text(state.errorMassage ?? 'حدث خطأ');
+                    }
+                    return ListView.separated(
+                      padding: EdgeInsets.all(16),
+                      itemCount: state.level.length,
+                      separatorBuilder: (context, index) =>
+                          SizedBox(height: 12.h),
+                      itemBuilder: (context, index) {
+                        final level = state.level[index];
+                        return Slidable(
+                          endActionPane: ActionPane(
+                            motion: BehindMotion(),
+                            extentRatio: 0.3,
+                            children: [
+                              SlidableAction(
+                                onPressed: (context) => showDialog(
+                                  context: context,
+                                  builder: (context) =>
+                                      DialogDeleteLevel(level: level),
+                                ),
+                                label: 'delete',
+                                icon: Icons.delete,
+                                backgroundColor: Colors.red,
+                              ),
+                            ],
+                          ),
+                          child: Card(
+                            elevation: 3,
+                            child: ListTile(
+                              title: Text(level.name),
+                              trailing: Icon(Icons.arrow_forward_ios),
+                              onLongPress: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) =>
+                                      DialogUpdateLevel(level: level),
+                                );
+                              },
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => Subject(
+                                      levelId: level.id,
+                                      levelName: level.name,
+                                      level: level,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
               ),
             ),
           ],

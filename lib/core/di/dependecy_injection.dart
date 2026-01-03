@@ -1,5 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:projectfourthyear/feature/group_users/data/api/api_service_add_group_user.dart';
+import 'package:projectfourthyear/feature/group_users/data/repo/repo_group_user.dart';
+import 'package:projectfourthyear/feature/group_users/presentation/cubit/group_user_cubit.dart';
+import 'package:projectfourthyear/feature/groups/data/api/api_service_group.dart';
+import 'package:projectfourthyear/feature/groups/data/repo/repo_group.dart';
+import 'package:projectfourthyear/feature/groups/presentation/cubit/group_cubit.dart';
 import 'package:projectfourthyear/feature/levels/data/api/api_service_level.dart';
 import 'package:projectfourthyear/feature/levels/data/repo/repo_level.dart';
 import 'package:projectfourthyear/feature/levels/presentation/cubit/level_cubit.dart';
@@ -16,7 +22,6 @@ import '../../feature/add_user/data/repo/repo_user.dart';
 import '../../feature/add_user/presentation/cubit/add_user_cubit.dart';
 
 final GetIt getIt = GetIt.instance;
-
 void setupDependencies() {
   // ///اعدادات الdio
   getIt.registerLazySingleton(() {
@@ -88,4 +93,12 @@ void setupDependencies() {
   getIt.registerLazySingleton(() => ApiServiceSubject(getIt<Dio>()));
   getIt.registerLazySingleton(() => RepoSubject(apiServiceSubject: getIt<ApiServiceSubject>()),);
   getIt.registerFactory(() => SubjectCubit(getIt<RepoSubject>()));
+  //مجموعات/شعب
+  getIt.registerLazySingleton(() => ApiServiceGroup(getIt<Dio>()),);
+  getIt.registerLazySingleton(() => RepoGroup(apiServiceGroup: getIt<ApiServiceGroup>()),);
+  getIt.registerFactory(() => GroupCubit(getIt<RepoGroup>()),);
+  //اضافة مستخدم لغروب
+  getIt.registerLazySingleton(() => ApiServiceAddGroupUser(getIt<Dio>()),);
+  getIt.registerLazySingleton(() => RepoGroupUser(apiServiceAddGroupUser: getIt<ApiServiceAddGroupUser>()),);
+  getIt.registerFactory(() => GroupUserCubit(getIt<RepoGroupUser>()));
 }

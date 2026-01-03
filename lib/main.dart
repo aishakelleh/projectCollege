@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:projectfourthyear/feature/group_users/presentation/cubit/group_user_cubit.dart';
+import 'package:projectfourthyear/feature/groups/presentation/cubit/group_cubit.dart';
 import 'package:projectfourthyear/feature/levels/presentation/cubit/level_cubit.dart';
 import 'package:projectfourthyear/feature/login/presentation/cubit/login/login_cubit.dart';
 import 'package:projectfourthyear/feature/subjects/predentation/cubit/subject_cubit.dart';
@@ -32,6 +34,8 @@ class Main extends StatelessWidget {
         BlocProvider(create: (context) => getIt<AddUserCubit>()),
         BlocProvider(create: (context) => getIt<LevelCubit>()),
         BlocProvider(create: (context) => getIt<SubjectCubit>()),
+        BlocProvider(create: (context) => getIt<GroupCubit>()),
+        BlocProvider(create: (context) => getIt<GroupUserCubit>()),
       ],
       child: ScreenUtilInit(
         designSize: Size(375, 812),
