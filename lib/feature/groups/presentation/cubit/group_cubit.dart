@@ -34,10 +34,10 @@ class GroupCubit extends Cubit<GroupState> {
     }
   }
 
-  Future<void> updateGroup(RequestGroup requestGroup, int groupId) async {
+  Future<void> updateGroup(int groupId,RequestGroup requestGroup ) async {
     emit(state.copyWith(status: StatusGroup.loading));
     try {
-      await repoGroup.updateGroup(requestGroup, groupId);
+      await repoGroup.updateGroup(groupId, requestGroup);
       await fetchData(requestGroup.levelId);
     } catch (e) {
       emit(

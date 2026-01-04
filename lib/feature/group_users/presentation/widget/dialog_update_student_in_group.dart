@@ -5,44 +5,31 @@ import 'package:projectfourthyear/feature/group_users/presentation/cubit/group_u
 import 'package:projectfourthyear/feature/groups/model/response/response_group.dart';
 import '../../../add_user/model/add_user/response/response_user.dart';
 
-class DialogUpdateStudentInGroup extends StatefulWidget {
+class DialogUpdateStudentCost extends StatefulWidget {
   final ResponseGroup group;
-  final List<ResponseUser> students; // كل الطلاب المتاحين
-  final RequestAddUserToGroup groupUser; // بيانات الطالب الحالي بالغروب
+  final ResponseUser student;
+  final int currentCost;
 
-  const DialogUpdateStudentInGroup({
+  const DialogUpdateStudentCost({
     super.key,
     required this.group,
-    required this.students,
-    required this.groupUser,
+    required this.student,
+    required this.currentCost,
   });
 
   @override
-  State<DialogUpdateStudentInGroup> createState() =>
-      _DialogUpdateStudentInGroupState();
+  State<DialogUpdateStudentCost> createState() =>
+      _DialogUpdateStudentCostState();
 }
 
-class _DialogUpdateStudentInGroupState
-    extends State<DialogUpdateStudentInGroup> {
+class _DialogUpdateStudentCostState extends State<DialogUpdateStudentCost> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _costController;
-  ResponseUser? _selectedStudent;
 
   @override
   void initState() {
     super.initState();
-    // Cost موجود مسبقاً
-    _costController =
-        TextEditingController(text: widget.groupUser.cost.toString());
-
-    // اختيار الطالب الحالي في Dropdown
-    try {
-      _selectedStudent = widget.students
-          .firstWhere((u) => u.id == widget.groupUser.userId);
-    } catch (e) {
-      // لو الطالب ما موجود بالقائمة، خلي null
-      _selectedStudent = null;
-    }
+    _costController = TextEditingController(text: widget.currentCost.toString());
   }
 
   @override
@@ -54,44 +41,22 @@ class _DialogUpdateStudentInGroupState
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Update Student in ${widget.group.name}'),
+      title: Text('Update Cost for ${widget.student.name}'),
       content: Form(
         key: _formKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            DropdownButtonFormField<ResponseUser>(
-              value: _selectedStudent,
-              hint: Text('Select Student'),
-              items: widget.students.map((user) {
-                return DropdownMenuItem(value: user, child: Text(user.name));
-              }).toList(),
-              onChanged: (value) {
-                setState(() {
-                  _selectedStudent = value;
-                });
-              },
-              validator: (value) {
-                if (value == null) return 'Please select a student';
-                return null;
-              },
-            ),
-            const SizedBox(height: 12),
-            TextFormField(
-              controller: _costController,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(labelText: 'Cost'),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter cost';
-                }
-                if (int.tryParse(value) == null) {
-                  return 'Enter a valid number';
-                }
-                return null;
-              },
-            ),
-          ],
+        child: TextFormField(
+          controller: _costController,
+          keyboardType: TextInputType.number,
+          decoration: const InputDecoration(labelText: 'Cost'),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter cost';
+            }
+            if (int.tryParse(value) == null) {
+              return 'Enter a valid number';
+            }
+            return null;
+          },
         ),
       ),
       actions: [
@@ -99,22 +64,23 @@ class _DialogUpdateStudentInGroupState
           onPressed: () {
             if (!_formKey.currentState!.validate()) return;
 
-            // إرسال الطلب للكيوبت
+            // إرسال الطلب للكيوبت لتحديث التكلفة فقط
             context.read<GroupUserCubit>().updateGroupUser(
               RequestAddUserToGroup(
-                userId: _selectedStudent!.id,
+                userId: widget.student.id,
                 groupId: widget.group.id,
                 cost: int.parse(_costController.text),
-              ),3
+              ),
+              3, // role = student
             );
 
             Navigator.pop(context);
           },
-          child: Text('Update'),
+          child: const Text('Update'),
         ),
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: Text('Cancel'),
+          child: const Text('Cancel'),
         ),
       ],
     );

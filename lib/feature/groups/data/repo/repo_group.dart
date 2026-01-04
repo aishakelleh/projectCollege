@@ -16,8 +16,8 @@ class RepoGroup {
     return await apiServiceGroup.addGroup(requestGroup);
   }
 
-  Future<ResponseGroup> updateGroup(RequestGroup requestGroup,int id) async {
-    return await apiServiceGroup.editGroup(requestGroup,id);
+  Future<ResponseGroup> updateGroup(int id,RequestGroup requestGroup) async {
+    return await apiServiceGroup.editGroup(id,requestGroup);
   }
 
   Future<void> cancelGroup(int id) async {

@@ -108,7 +108,7 @@ class _SubjectState extends State<Subject> {
                       onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => GroupPage(level: widget.level),
+                          builder: (context) => GroupPage( level: widget.level,),
                         ),
                       ),
                     ),

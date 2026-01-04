@@ -18,9 +18,11 @@ abstract class ApiServiceGroup {
 
   @PUT('/Groups/{id}')
   Future<ResponseGroup> editGroup(
-    @Body() RequestGroup requestGroup,
       @Path('id') int id,
-  );
+      @Body() RequestGroup requestGroup
+      );
+
+
 
   @DELETE('/Groups/{id}')
   Future<void> deleteGroup(@Path('id') int id);

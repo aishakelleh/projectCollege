@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:projectfourthyear/feature/groups/model/request/request_group.dart';
+import 'package:projectfourthyear/feature/groups/model/response/response_group.dart';
 import 'package:projectfourthyear/feature/groups/presentation/cubit/group_cubit.dart';
-import '../../../levels/model/response/response_level.dart';
 
 class DialogUpdateGroup extends StatefulWidget {
-  final ResponseLevel level;
+  final ResponseGroup group;
 
-  const DialogUpdateGroup({super.key, required this.level});
+  const DialogUpdateGroup({super.key, required this.group});
 
   @override
   State<DialogUpdateGroup> createState() => _DialogAddGroupState();
@@ -21,16 +21,17 @@ class _DialogAddGroupState extends State<DialogUpdateGroup> {
   int selectedGender = 0;
   // 0 = Male, 1 = Female
   @override
-  void initState(){
-    nameController=TextEditingController(text: widget.level.name);
+  @override
+  void initState() {
     super.initState();
-
-
+    nameController = TextEditingController(text: widget.group.name);
+    selectedGender = widget.group.gender;
   }
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('edit Group to ${widget.level.name}'),
+      title: Text('edit Group to ${widget.group.name}'),
       content: Form(
         key: formKey,
         child: Column(
@@ -80,11 +81,11 @@ class _DialogAddGroupState extends State<DialogUpdateGroup> {
           onPressed: () {
             if (formKey.currentState!.validate()) {
               context.read<GroupCubit>().updateGroup(
-                RequestGroup(
-                  name: nameController.text,
-                  levelId: widget.level.id,
-                  gender: selectedGender,
-                ),widget.level.id
+               widget.group.id, RequestGroup(
+              name: nameController.text,
+              levelId: widget.group.levelId,
+              gender: selectedGender,
+              )
               );
               Navigator.pop(context);
             }
